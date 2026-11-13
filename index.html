@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Média Semestral</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f8;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px;
+    margin: 0;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+  }
+  h1 { font-size: 1.3rem; margin-top: 0; text-align: center; }
+  label { display: block; margin: 14px 0 6px; font-weight: bold; }
+  input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+  button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 1rem;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover { background: #1d4ed8; }
+  #resultado {
+    margin-top: 18px;
+    padding: 14px;
+    background: #eef3ff;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.1rem;
+    min-height: 24px;
+  }
+  .erro { color: #c62828; background: #fdecea !important; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Quanto passa?</h1>
+
+    <label for="media1">Média Semestral 1</label>
+    <input type="number" id="media1" step="any" min="0" placeholder="Ex.: 7.5">
+
+    <label for="nota3">Nota da 3ª unidade</label>
+    <input type="number" id="nota3" step="any" min="0" placeholder="Ex.: 6">
+
+    <button onclick="verQuantoPassa()">Ver quanto passa</button>
+
+    <div id="resultado"></div>
+  </div>
+
+<script>
+  function verQuantoPassa() {
+    const media1 = parseFloat(document.getElementById('media1').value.replace(',', '.'));
+    const nota3  = parseFloat(document.getElementById('nota3').value.replace(',', '.'));
+    const res = document.getElementById('resultado');
+
+    if (isNaN(media1) || isNaN(nota3)) {
+      res.className = 'erro';
+      res.textContent = 'Preencha as duas notas.';
+      return;
+    }
+
+    const total = media1 * 2 + nota3;
+    const falta = 24 - total;
+    const fmt = n => n.toFixed(2).replace('.', ',');
+    res.className = '';
+
+    let html = '(' + media1 + ' × 2) + ' + nota3 + ' = <strong>' + fmt(total) + '</strong><br>' +
+               '24 − ' + fmt(total) + ' = <strong>' + fmt(falta) + '</strong><br><br>';
+
+    if (falta <= 0) {
+      html += '✅ Você já passou!';
+    } else {
+      html += 'Faltam <strong>' + fmt(falta) + '</strong> pontos para passar.';
+    }
+    res.innerHTML = html;
+  }
+</script>
+</body>
+</html>
